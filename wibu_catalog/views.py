@@ -23,3 +23,16 @@ def register(request):
 def product(request):
     products = Product.objects.all()
     return render(request, 'html/warehouse.html',{'products': products})
+
+def search_products(request):
+    query = request.GET.get('q', '').lower()
+    products = None
+
+    if query in ['one piece', 'one pieace']:
+        products = Product.objects.filter(cid_id=12)
+    elif query in ['naruto']:
+        products = Product.objects.filter(cid_id=11)
+    elif query in ['gundam']:
+        products = Product.objects.filter(cid_id=61)
+    
+    return render(request, 'html/search_results.html', {'products': products})
