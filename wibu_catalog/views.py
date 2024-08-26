@@ -332,12 +332,10 @@ def user_profile(request):
 
     if request.method == 'POST':
         username = request.POST.get('username')
-        email = request.POST.get('email')
         date_of_birth = request.POST.get('dateOfBirth')
 
         #Update
         userr.username = username
-        userr.email = email
         userr.dateOfBirth = date_of_birth
         userr.save()
 
