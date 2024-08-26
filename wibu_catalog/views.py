@@ -138,16 +138,16 @@ def delete_comment(request, comment_id):
 
 def list_product(request):
     userr = _get_user_from_session(request)
-    query = request.GET.get('q', '')  # Lấy từ khóa tìm kiếm từ URL, mặc định là chuỗi rỗng
-    sort_by = request.GET.get('sort_by', 'id')  # Giá trị mặc định là 'id'
+    query = request.GET.get('q', '')
+    sort_by = request.GET.get('sort_by', 'id')
 
-    # Tìm kiếm sản phẩm theo từ khóa
+
     if query:
         products_list = Product.objects.filter(name__icontains=query)
     else:
         products_list = Product.objects.all()
 
-    # Sắp xếp sản phẩm theo yêu cầu
+
     if sort_by == 'highest_rate':
         products_list = products_list.order_by('-ravg')
     elif sort_by == 'low_to_high':
@@ -159,7 +159,7 @@ def list_product(request):
     page_number = request.GET.get('page')
     products = paginator.get_page(page_number)
 
-    return render(request, 'html/warehouse.html', {'products': products, 'current_sort': sort_by, 'query': query,"userr":userr})
+    return render(request, 'html/warehouse.html', {'products': products, 'current_sort': sort_by, 'query': query,"userr":userr,'paginator': paginator})
 
 
 def search_content(request):
