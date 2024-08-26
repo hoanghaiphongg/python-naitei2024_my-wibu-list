@@ -41,4 +41,6 @@ urlpatterns = [
     path('favorites/', views.FavoriteListView.as_view(), name='favorite_list'),
     path('user_profile/', views.user_profile, name='user_profile'),
     path('update_favorite_status/<int:content_id>/', views.update_favorite_status, name='update_favorite_status'),
+    path('change-password/', views.ChangePassword.as_view(), name='change_password'),
+
 ]

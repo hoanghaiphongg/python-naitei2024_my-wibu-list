@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import RegistrationForm, LoginForm, CommentForm, EditCommentForm
+from .forms import RegistrationForm, LoginForm, CommentForm, EditCommentForm, ChangePasswordForm
 from django.contrib.auth.forms import UserCreationForm
 from django.views import generic, View
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -61,7 +61,7 @@ def register(request):
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password'])
             user.save()
-            return redirect('homepage')
+            return redirect('login')
     else:
         form = RegistrationForm()
     return render(request, 'html/registerform.html', {'form': form})
@@ -349,3 +349,22 @@ def update_favorite_status(request, content_id):
 
     return redirect('anime_detail', pk=content_id)
 
+
+class ChangePassword(View):
+    def post(self, request):
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        new_password_confirmation = request.POST.get('new_password_confirmation')
+        userr = _get_user_from_session(request)
+
+        if userr.password == old_password and new_password == new_password_confirmation :
+            userr.password = new_password
+            userr.save()
+            return redirect('homepage')
+        else:
+            form = ChangePasswordForm()
+            return render(request, 'html/change_password.html', {'form': form})
+
+    def get(self, request):
+        form = ChangePasswordForm()
+        return render(request, 'html/change_password.html', {'form': form})

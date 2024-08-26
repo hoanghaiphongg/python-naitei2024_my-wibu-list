@@ -15,6 +15,7 @@ from wibu_catalog.constants import FIELD_MAX_LENGTH_S, FIELD_MAX_LENGTH_M
 from wibu_catalog.constants import FIELD_MAX_LENGTH_L, FIELD_MAX_LENGTH_XL
 from cloudinary.models import CloudinaryField
 
+
 # turn coca into tuple to use with choices
 Content_category_tuple = [
     (key, value) for key, value in Content_category.items()

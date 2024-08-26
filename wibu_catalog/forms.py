@@ -3,6 +3,9 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.forms import AuthenticationForm
+from .models import Users
+from django.shortcuts import render, redirect
+
 
 from wibu_catalog.models import Comments
 
@@ -63,3 +66,18 @@ class EditCommentForm(forms.ModelForm):
     class Meta:
         model = Comments
         fields = ['content']  # Assuming 'content' is the field you want to allow editing
+
+
+class ChangePasswordForm(AuthenticationForm):
+    old_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': _('Current Password')}),
+        label=_('Current Password')
+    )
+    new_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': _('New Password')}),
+        label=_('New Password')
+    )
+    new_password_confirmation = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': _('Confirm New Password')}),
+        label=_('New Password Confirmation')
+    )
