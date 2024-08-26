@@ -63,3 +63,17 @@ class EditCommentForm(forms.ModelForm):
     class Meta:
         model = Comments
         fields = ['content']  # Assuming 'content' is the field you want to allow editing
+
+class ChangePasswordForm(AuthenticationForm):
+    old_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': _('Current Password')}),
+        label=_('Current Password')
+    )
+    new_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': _('New Password')}),
+        label=_('New Password')
+    )
+    new_password_confirmation = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': _('Confirm New Password')}),
+        label=_('New Password Confirmation')
+    )

@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import RegistrationForm, LoginForm, CommentForm, EditCommentForm
+from .forms import RegistrationForm, LoginForm, CommentForm, EditCommentForm, ChangePasswordForm
 from django.contrib.auth.forms import UserCreationForm
 from django.views import generic, View
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.utils import timezone
+from django.contrib.auth.hashers import check_password,make_password
 
 from django.db.models import Q
 # import data from constants.py
@@ -266,7 +267,7 @@ class LoginView(View):
     def _authenticate_user(self, email, password):
         try:
             user = Users.objects.get(email=email)
-            if password == user.password:
+            if check_password(password, user.password):
                 return user
             else:
                 return None
@@ -408,3 +409,23 @@ def score_to_str(content_cid, user_uid):
         return ScoreEnum(str(score_int)).value
     except ObjectDoesNotExist:
         return None
+
+class ChangePassword(View):
+    def post(self, request):
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        new_password_confirmation = request.POST.get('new_password_confirmation')
+        userr = _get_user_from_session(request)
+
+        if check_password(old_password, userr.password) and new_password == new_password_confirmation:
+            userr.password = make_password(new_password)
+            userr.save()
+            return redirect('homepage')
+        else:
+            form = ChangePasswordForm()
+            return render(request, 'html/change_password.html', {'form': form})
+
+    def get(self, request):
+        form = ChangePasswordForm()
+        return render(request, 'html/change_password.html', {'form': form})
+

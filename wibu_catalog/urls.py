@@ -44,4 +44,7 @@ urlpatterns = [
 
     # url mapping for rating score
     path('update_score/<int:content_id>/', views.update_score, name='update_score'),
+    #url for change password view
+    path('change-password/', views.ChangePassword.as_view(), name='change_password'),
+
 ]
