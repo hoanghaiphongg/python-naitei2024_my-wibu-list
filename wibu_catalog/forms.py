@@ -131,3 +131,53 @@ class ChangePasswordForm(AuthenticationForm):
         ),
         label=_('New Password Confirmation')
     )
+
+
+class UserRegistrationForm(forms.Form):
+    name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': _('Name')
+            }
+        ),
+        label=_('Name')
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': _('Email Address')
+            }
+        ),
+        label=_('Email Address')
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': _('Password')
+            }
+        ),
+        label=_('Password')
+    )
+    password_confirmation = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': _('Confirm Password')
+            }
+        ),
+        label=_('Confirm Password')
+    )
+    dateOfBirth = forms.DateField(
+        widget=forms.DateInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': _('Date of Birth'),
+                'type': 'date'
+            }
+        ),
+        label=_('Date of Birth'),
+        required=False
+    )
