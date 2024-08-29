@@ -40,9 +40,8 @@ from wibu_catalog.models import (
 
 # Import from forms.py
 from wibu_catalog.forms import (
-    RegistrationForm, LoginForm,
-    CommentForm, EditCommentForm,
-    ChangePasswordForm
+    LoginForm, CommentForm, EditCommentForm,
+    ChangePasswordForm, UserRegistrationForm,
 )
 
 
@@ -112,17 +111,41 @@ def user(request):
     )
 
 
-def register(request):
-    if request.method == "POST":
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.set_password(form.cleaned_data["password"])
-            user.save()
-            return redirect("homepage")
-    else:
-        form = RegistrationForm()
-    return render(request, "html/registerform.html", {"form": form})
+class UserRegistrationView(View):
+    template_name = 'html/registerform.html'
+
+    def get(self, request):
+        form = UserRegistrationForm()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = UserRegistrationForm(request.POST)
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        password_confirmation = request.POST.get("password_confirmation")
+        dateOfBirth = request.POST.get("dateOfBirth")
+
+        if Users.objects.filter(email=email).exists():
+            form.add_error('email', _('Email address already exists.'))
+            return render(request, self.template_name, {'form': form})
+
+        if password != password_confirmation:
+            form.add_error('password_confirmation', _('Passwords do not match.'))
+            return render(request, self.template_name, {'form': form})
+
+        new_uid = Users.objects.count() + 1
+        user = Users.objects.create(
+            uid=new_uid,
+            username=name,
+            role='new_user',
+            email=email,
+            password=make_password(password),
+            dateOfBirth=dateOfBirth,
+            registrationDate=timezone.now(),
+        )
+
+        return redirect('login')
 
 
 # Comment section:

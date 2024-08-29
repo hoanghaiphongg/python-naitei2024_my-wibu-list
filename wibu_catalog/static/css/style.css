@@ -68,3 +68,17 @@ h2 {
   margin-top: -15px;
   margin-bottom: 10px;
 }
+
+.alert-error {
+  color: #dc3545; /* Red color for errors */
+  background-color: #f8d7da; /* Light red background */
+  border: 1px solid #f5c6cb; /* Red border */
+  padding: 0.75rem 1.25rem; /* Padding */
+  border-radius: 0.25rem; /* Rounded corners */
+  margin-bottom: 1rem; /* Margin below the error */
+}
+
+.alert-error p {
+  margin: 0; /* Remove margin from paragraphs inside alert */
+}
+
