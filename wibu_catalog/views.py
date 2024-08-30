@@ -35,6 +35,11 @@ from wibu_catalog.forms import (
     LoginForm, CommentForm, EditCommentForm,
     ChangePasswordForm, UserRegistrationForm,
 )
+from wibu_catalog.models import (
+    Content, Score, Users, FavoriteList,
+    ScoreList, Comments, Notifications,
+    Product, Order, OrderItems, Feedback,
+)
 
 
 def _get_user_from_session(request):
